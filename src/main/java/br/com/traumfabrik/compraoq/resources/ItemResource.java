@@ -1,6 +1,11 @@
 package br.com.traumfabrik.compraoq.resources;
 
 import br.com.traumfabrik.compraoq.component.Retorno;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -21,6 +26,7 @@ import jakarta.validation.Valid;
 
 import java.util.List;
 
+@Tag(name="Item")
 @RestController
 @RequestMapping("/itens")
 public class ItemResource {
@@ -32,37 +38,73 @@ public class ItemResource {
 			value="/v1",
 			produces = {MediaType.APPLICATION_JSON_VALUE,MediaType.APPLICATION_XML_VALUE}
 	)
+	@Operation(description = "Buscar todos itens cadastrado, independente da lista")
+	@ApiResponse(
+			description  = "Retorno com sucesso",
+			responseCode = "200",
+			content = @Content(
+					schema = @Schema(implementation = Item.class)
+			)
+	)
 	public ResponseEntity<List<Item>> findAll() {
 		return ResponseEntity.ok(itemService.findAll());
 	}
 
 	@GetMapping(
-			value="/v1/lista/{local}",
+			value="/v1/lista/{lista}",
 			produces = {MediaType.APPLICATION_JSON_VALUE,MediaType.APPLICATION_XML_VALUE}
 	)
-	public ResponseEntity<List<Item>> findByList(@PathVariable Integer local) {
-		return ResponseEntity.ok(itemService.findByList(local));
+	@Operation(description = "Buscar todos os itens de uma lista especifica")
+	public ResponseEntity<List<Item>> findByList(@PathVariable Integer lista) {
+		return ResponseEntity.ok(itemService.findByList(lista));
 	}
 
 	@GetMapping(
 			value="/v1/{id}",
-			produces = {MediaType.APPLICATION_JSON_VALUE,MediaType.APPLICATION_XML_VALUE})
+			produces = {MediaType.APPLICATION_JSON_VALUE,MediaType.APPLICATION_XML_VALUE}
+	)
+	@Operation(description = "Obter detalhes do item por seu id")
 	public ResponseEntity<Item> findById(@PathVariable Long id) {
 		return ResponseEntity.ok(itemService.findById(id));
 	}
 
-	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(
+			value    = "/v1",
+			consumes = {MediaType.APPLICATION_JSON_VALUE,MediaType.APPLICATION_XML_VALUE},
+			produces = {MediaType.APPLICATION_JSON_VALUE,MediaType.APPLICATION_XML_VALUE}
+	)
+	@Operation(description = "Salvar novo item na lista")
+	@ApiResponse(
+			description  = "Retorna o item salvo",
+			responseCode = "201",
+			content = @Content(
+					schema = @Schema(implementation = Item.class)
+			)
+	)
 	public ResponseEntity<Retorno<Item>> save(@RequestBody @Valid ItemDto itemDto) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(itemService.save(itemDto));
 	}
 	
-	@DeleteMapping(value="/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
+	@DeleteMapping(
+			value    ="/v1/{id}",
+			produces = {MediaType.APPLICATION_JSON_VALUE,MediaType.APPLICATION_XML_VALUE}
+	)
+	@Operation(description = "Apagar item de uma lista")
+	@ApiResponse(
+			description = "Item excluído",
+			responseCode = "204"
+	)
 	public ResponseEntity<Void> delete(@PathVariable Long id) {
 		itemService.delete(id);
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();	
 	}
 	
-	@PutMapping(value = "/{id}",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PutMapping(
+			value    = "/v1/{id}",
+			consumes = {MediaType.APPLICATION_JSON_VALUE,MediaType.APPLICATION_XML_VALUE},
+			produces = {MediaType.APPLICATION_JSON_VALUE,MediaType.APPLICATION_XML_VALUE}
+	)
+	@Operation(description = "Atualizar informações do item")
 	public ResponseEntity<Item> update(@PathVariable Long id,@RequestBody @Valid ItemDto itemDto) {
 		return ResponseEntity.status(HttpStatus.OK).body(itemService.update(id,itemDto));
 	}
@@ -71,6 +113,7 @@ public class ItemResource {
 			value = "/v1/atualizar/{id}/{pendente}",
 			produces = {MediaType.APPLICATION_JSON_VALUE,MediaType.APPLICATION_XML_VALUE}
 	)
+	@Operation(description = "Atualiza a quantidade do item, se está pendente compra ou não")
 	public ResponseEntity<Item> updateItem(@PathVariable Long id,@PathVariable Integer pendente) {
 		return ResponseEntity.ok(itemService.updateItem(id,pendente));
 	}

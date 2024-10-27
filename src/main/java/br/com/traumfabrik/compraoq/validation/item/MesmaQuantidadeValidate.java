@@ -1,8 +1,8 @@
 package br.com.traumfabrik.compraoq.validation.item;
 
 import br.com.traumfabrik.compraoq.entities.Item;
-import br.com.traumfabrik.compraoq.exception.ExceptionOfNotFound;
-import br.com.traumfabrik.compraoq.exception.ExceptionOfValidate;
+import br.com.traumfabrik.compraoq.infra.exception.ExceptionOfNotFound;
+import br.com.traumfabrik.compraoq.infra.exception.ExceptionOfValidate;
 import br.com.traumfabrik.compraoq.repositories.ItemRepository;
 import br.com.traumfabrik.compraoq.validation.ValidationRule;
 import org.springframework.beans.factory.annotation.Autowired;

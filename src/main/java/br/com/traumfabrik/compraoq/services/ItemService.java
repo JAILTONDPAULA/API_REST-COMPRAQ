@@ -3,7 +3,7 @@ package br.com.traumfabrik.compraoq.services;
 import java.util.List;
 
 import br.com.traumfabrik.compraoq.component.Retorno;
-import br.com.traumfabrik.compraoq.exception.ExceptionOfNotFound;
+import br.com.traumfabrik.compraoq.infra.exception.ExceptionOfNotFound;
 import br.com.traumfabrik.compraoq.validation.ValidationRule;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

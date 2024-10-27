@@ -1,7 +1,7 @@
 package br.com.traumfabrik.compraoq.services;
 
 import br.com.traumfabrik.compraoq.entities.Item;
-import br.com.traumfabrik.compraoq.exception.ExceptionOfValidate;
+import br.com.traumfabrik.compraoq.infra.exception.ExceptionOfValidate;
 import br.com.traumfabrik.compraoq.repositories.ItemRepository;
 import br.com.traumfabrik.compraoq.validation.item.MesmaQuantidadeValidate;
 import br.com.traumfabrik.compraoq.validation.item.QuantidadesNaoPermitidaValidate;

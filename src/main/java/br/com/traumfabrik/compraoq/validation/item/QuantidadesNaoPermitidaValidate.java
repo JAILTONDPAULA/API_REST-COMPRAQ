@@ -1,7 +1,7 @@
 package br.com.traumfabrik.compraoq.validation.item;
 
 import br.com.traumfabrik.compraoq.entities.Item;
-import br.com.traumfabrik.compraoq.exception.ExceptionOfValidate;
+import br.com.traumfabrik.compraoq.infra.exception.ExceptionOfValidate;
 import br.com.traumfabrik.compraoq.validation.ValidationRule;
 import org.springframework.stereotype.Component;
 

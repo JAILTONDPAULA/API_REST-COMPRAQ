@@ -1,4 +1,4 @@
-package br.com.traumfabrik.compraoq.exception;
+package br.com.traumfabrik.compraoq.infra.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

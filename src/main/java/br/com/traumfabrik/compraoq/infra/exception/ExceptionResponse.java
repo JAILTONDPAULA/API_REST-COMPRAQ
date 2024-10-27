@@ -1,4 +1,4 @@
-package br.com.traumfabrik.compraoq.exception;
+package br.com.traumfabrik.compraoq.infra.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
