@@ -2,7 +2,7 @@ spring:
   application:
     name: compraoq
   datasource:
-    url: jdbc:postgresql://192.168.1.5:5432/compraoq
+    url: jdbc:postgresql://192.168.1.4:5432/compraoq
     userName: postgres
     password: abc1234
     driver-class-name: org.postgresql.Driver

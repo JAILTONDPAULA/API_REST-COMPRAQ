@@ -63,10 +63,6 @@ public class Usuario implements UserDetails,Serializable {
           return this.userName;
      }
 
-     public String getPassword() {
-          return "{noop}"+password;
-     }
-
      @Override
      public boolean isAccountNonExpired() {
           return this.accountNonExpired;
