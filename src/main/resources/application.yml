@@ -1,0 +1,30 @@
+spring:
+  application:
+    name: compraoq
+  datasource:
+    url: jdbc:postgresql://192.168.1.4:5432/compraoq
+    userName: postgres
+    password: abc1234
+    driver-class-name: org.postgresql.Driver
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    table: tb_versions
+    schemas: compraoq
+  jpa:
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+    show-sql: false
+server:
+  error:
+    include-stacktrace: never
+    include-message: on_param
+logging:
+  level:
+    root: INFO
+    org.springframework.web: WARN
+    com.example.myapp: DEBUG
+jwt:
+  secret: ${JWT_SECRET:compraoq}
