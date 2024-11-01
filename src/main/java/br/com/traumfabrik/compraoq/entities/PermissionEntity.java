@@ -15,14 +15,15 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(of = "id")
-public class Permissao implements GrantedAuthority,Serializable {
+public class PermissionEntity implements GrantedAuthority,Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String  descricao;
+    @Column(name = "descricao")
+    private String  description;
 
     @Override
     public String getAuthority() {
-        return this.descricao;
+        return this.description;
     }
 }

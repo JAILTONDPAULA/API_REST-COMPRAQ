@@ -1,7 +1,8 @@
 package br.com.traumfabrik.compraoq.resources;
 
-import br.com.traumfabrik.compraoq.component.Retorno;
+import br.com.traumfabrik.compraoq.entities.ItemEntity;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -11,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,15 +23,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.traumfabrik.compraoq.dto.ItemDto;
-import br.com.traumfabrik.compraoq.entities.Item;
 import br.com.traumfabrik.compraoq.services.ItemService;
 import jakarta.validation.Valid;
 
 import java.util.List;
 
-@Tag(name="Item")
 @RestController
 @RequestMapping("/itens")
+@Tag(name="Item")
 @SecurityRequirement(name = "BearerAuth")
 public class ItemResource {
 	
@@ -46,12 +45,23 @@ public class ItemResource {
 	@ApiResponse(
 			description  = "Retorno com sucesso",
 			responseCode = "200",
-			content = @Content(
-					schema = @Schema(implementation = Item.class)
-			)
+			content = {
+					@Content(
+							mediaType = MediaType.APPLICATION_XML_VALUE,
+							array = @ArraySchema(
+								schema = @Schema(implementation = ItemEntity.class)
+							)
+					),
+					@Content(
+							mediaType = MediaType.APPLICATION_JSON_VALUE,
+							array = @ArraySchema(
+									schema = @Schema(implementation = ItemEntity.class)
+							)
+					)
+			}
 	)
 	@PreAuthorize("hasAnyRole('ADMIN')")
-	public ResponseEntity<List<Item>> findAll() {
+	public ResponseEntity<List<ItemEntity>> findAll() {
 		return ResponseEntity.ok(itemService.findAll());
 	}
 
@@ -60,7 +70,25 @@ public class ItemResource {
 			produces = {MediaType.APPLICATION_JSON_VALUE,MediaType.APPLICATION_XML_VALUE}
 	)
 	@Operation(description = "Buscar todos os itens de uma lista especifica")
-	public ResponseEntity<List<Item>> findByList(@PathVariable Integer lista) {
+	@ApiResponse(
+			description  = "Retorno uma lista especifica de compras",
+			responseCode = "200",
+			content = {
+					@Content(
+							mediaType = MediaType.APPLICATION_XML_VALUE,
+							array = @ArraySchema(
+									schema = @Schema(implementation = ItemEntity.class)
+							)
+					),
+					@Content(
+							mediaType = MediaType.APPLICATION_JSON_VALUE,
+							array = @ArraySchema(
+									schema = @Schema(implementation = ItemEntity.class)
+							)
+					)
+			}
+	)
+	public ResponseEntity<List<ItemEntity>> findByList(@PathVariable Integer lista) {
 		return ResponseEntity.ok(itemService.findByList(lista));
 	}
 
@@ -69,7 +97,7 @@ public class ItemResource {
 			produces = {MediaType.APPLICATION_JSON_VALUE,MediaType.APPLICATION_XML_VALUE}
 	)
 	@Operation(description = "Obter detalhes do item por seu id")
-	public ResponseEntity<Item> findById(@PathVariable Long id) {
+	public ResponseEntity<ItemEntity> findById(@PathVariable Long id) {
 		return ResponseEntity.ok(itemService.findById(id));
 	}
 
@@ -83,10 +111,10 @@ public class ItemResource {
 			description  = "Retorna o item salvo",
 			responseCode = "201",
 			content = @Content(
-					schema = @Schema(implementation = Item.class)
+					schema = @Schema(implementation = ItemEntity.class)
 			)
 	)
-	public ResponseEntity<Retorno<Item>> save(@RequestBody @Valid ItemDto itemDto) {
+	public ResponseEntity<ItemEntity> save(@RequestBody @Valid ItemDto itemDto) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(itemService.save(itemDto));
 	}
 	
@@ -110,7 +138,20 @@ public class ItemResource {
 			produces = {MediaType.APPLICATION_JSON_VALUE,MediaType.APPLICATION_XML_VALUE}
 	)
 	@Operation(description = "Atualizar informações do item")
-	public ResponseEntity<Item> update(@PathVariable Long id,@RequestBody @Valid ItemDto itemDto) {
+	@ApiResponse(
+			description = "Retorna um item da lista com informações atualizada",
+			content = {
+					@Content(
+							mediaType = MediaType.APPLICATION_JSON_VALUE,
+							schema = @Schema(implementation = ItemEntity.class)
+					),
+					@Content(
+							mediaType = MediaType.APPLICATION_XML_VALUE,
+							schema = @Schema(implementation = ItemEntity.class)
+					)
+			}
+	)
+	public ResponseEntity<ItemEntity> update(@PathVariable Long id,@RequestBody @Valid ItemDto itemDto) {
 		return ResponseEntity.status(HttpStatus.OK).body(itemService.update(id,itemDto));
 	}
 
@@ -119,7 +160,21 @@ public class ItemResource {
 			produces = {MediaType.APPLICATION_JSON_VALUE,MediaType.APPLICATION_XML_VALUE}
 	)
 	@Operation(description = "Atualiza a quantidade do item, se está pendente compra ou não")
-	public ResponseEntity<Item> updateItem(@PathVariable Long id,@PathVariable Integer pendente) {
+	@ApiResponse(
+			description = "Retorna um item da lista com quantidade atualizada",
+			content = {
+					@Content(
+							mediaType = MediaType.APPLICATION_JSON_VALUE,
+							schema = @Schema(implementation = ItemEntity.class)
+					),
+					@Content(
+							mediaType = MediaType.APPLICATION_XML_VALUE,
+							schema = @Schema(implementation = ItemEntity.class)
+					)
+			}
+	)
+
+	public ResponseEntity<ItemEntity> updateItem(@PathVariable Long id,@PathVariable Integer pendente) {
 		return ResponseEntity.ok(itemService.updateItem(id,pendente));
 	}
 

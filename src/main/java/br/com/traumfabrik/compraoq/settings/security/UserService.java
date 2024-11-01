@@ -1,6 +1,6 @@
-package br.com.traumfabrik.compraoq.services;
+package br.com.traumfabrik.compraoq.settings.security;
 
-import br.com.traumfabrik.compraoq.repositories.UsuarioRepository;
+import br.com.traumfabrik.compraoq.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -8,13 +8,13 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UsuarioService implements UserDetailsService {
+public class UserService implements UserDetailsService {
     @Autowired
-    private UsuarioRepository usuarioRepository;
+    private UserRepository userRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserDetails user = usuarioRepository.findByUserName(username);
+        UserDetails user = userRepository.findByUserName(username);
         if(user != null) {
             return user;
         }else{

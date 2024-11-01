@@ -1,10 +1,9 @@
 package br.com.traumfabrik.compraoq.services;
 
-import br.com.traumfabrik.compraoq.entities.Item;
-import br.com.traumfabrik.compraoq.infra.exception.ExceptionOfValidate;
+import br.com.traumfabrik.compraoq.entities.ItemEntity;
 import br.com.traumfabrik.compraoq.repositories.ItemRepository;
-import br.com.traumfabrik.compraoq.validation.item.MesmaQuantidadeValidate;
-import br.com.traumfabrik.compraoq.validation.item.QuantidadesNaoPermitidaValidate;
+import br.com.traumfabrik.compraoq.validation.item.EqualsQuantityValidate;
+import br.com.traumfabrik.compraoq.validation.item.IllegalQuantityValidate;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -21,16 +20,16 @@ import java.util.Optional;
 class ValidateItemTest {
 
     @InjectMocks
-    private MesmaQuantidadeValidate mesmaQuantidadeValidate;
+    private EqualsQuantityValidate mesmaQuantidadeValidate;
 
     @InjectMocks
-    private QuantidadesNaoPermitidaValidate quantidadesNaoPermitidaValidate;
+    private IllegalQuantityValidate quantidadesNaoPermitidaValidate;
 
     @Mock
     private ItemRepository itemRepository;
 
     @Mock
-    private Item item;
+    private ItemEntity item;
 
     @Test
     @DisplayName("Não permite atualizar quantidade com valor atual")
@@ -40,15 +39,15 @@ class ValidateItemTest {
         BDDMockito.given(item.getId()).willReturn(1L); // Supondo que o ID do item seja 1
         BDDMockito.given(itemRepository.findById(item.getId())).willReturn(Optional.of(item));
 
-        Item item2 = new Item(1L,"Teste",2,1);
-        Assertions.assertThrows(ExceptionOfValidate.class,()->mesmaQuantidadeValidate.validate(item2));
+        ItemEntity item2 = new ItemEntity(1L,"Teste",2,1);
+        Assertions.assertThrows(IllegalArgumentException.class,()->mesmaQuantidadeValidate.validate(item2));
     }
 
     @Test
     @DisplayName("Não permite atualizar item com quantidade não liberadas")
     public void naoPermiteAtualizarQuantidadesNaoLiberadas() {
         BDDMockito.given(item.getPendente()).willReturn(2);
-        Assertions.assertThrows(ExceptionOfValidate.class,()->quantidadesNaoPermitidaValidate.validate(item));
+        Assertions.assertThrows(IllegalArgumentException.class,()->quantidadesNaoPermitidaValidate.validate(item));
     }
 
 }

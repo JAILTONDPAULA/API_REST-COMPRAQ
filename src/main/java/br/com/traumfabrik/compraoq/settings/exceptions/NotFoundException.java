@@ -1,11 +1,11 @@
-package br.com.traumfabrik.compraoq.infra.exception;
+package br.com.traumfabrik.compraoq.settings.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(HttpStatus.NOT_FOUND)
-public class ExceptionOfNotFound extends RuntimeException {
-    public ExceptionOfNotFound(String message) {
+public class NotFoundException extends RuntimeException {
+    public NotFoundException(String message) {
         super(message);
     }
 }

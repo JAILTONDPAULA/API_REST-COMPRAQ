@@ -1,13 +1,12 @@
 package br.com.traumfabrik.compraoq.repositories;
 
+import br.com.traumfabrik.compraoq.entities.ItemEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
-
-import br.com.traumfabrik.compraoq.entities.Item;
 
 import java.util.List;
 
-public interface ItemRepository extends JpaRepository<Item, Long>{
+public interface ItemRepository extends JpaRepository<ItemEntity, Long>{
 
-    List<Item> findByLocal(Integer local);
+    List<ItemEntity> findByLocalOrderByDescription(Integer local);
 
 }

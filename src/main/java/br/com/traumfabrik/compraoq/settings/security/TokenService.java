@@ -1,6 +1,6 @@
-package br.com.traumfabrik.compraoq.services;
+package br.com.traumfabrik.compraoq.settings.security;
 
-import br.com.traumfabrik.compraoq.entities.Usuario;
+import br.com.traumfabrik.compraoq.entities.UserEntity;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
@@ -19,14 +19,13 @@ public class TokenService {
     @Value("${jwt.secret}")
     private String secret;
 
-    public String generateToken(Usuario usuario) {
+    public String generateToken(UserEntity usuario) {
         try {
-            Algorithm algorithm = Algorithm.HMAC256(secret);
             return JWT.create()
                       .withIssuer("API COMPRAOQ")
                       .withSubject(usuario.getUsername())
                       .withExpiresAt(getTime())
-                      .sign(algorithm);
+                      .sign(Algorithm.HMAC256(secret));
         } catch (JWTCreationException exception){
             throw new RuntimeException("Erro ao gerar token");
         }
@@ -35,8 +34,7 @@ public class TokenService {
 
     public String decodeToken(String token) {
         try {
-            Algorithm algorithm = Algorithm.HMAC256(secret);
-            return JWT.require(algorithm)
+            return JWT.require(Algorithm.HMAC256(secret))
                     .withIssuer("API COMPRAOQ")
                     .build()
                     .verify(token)
